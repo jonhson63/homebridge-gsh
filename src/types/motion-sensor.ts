@@ -3,7 +3,7 @@ import { Characteristic } from '../hap-types';
 import { HapService, AccessoryTypeExecuteResponse } from '../interfaces';
 import { Hap } from '../hap';
 
-export class ContactSensor {
+export class MotionSensor {
  
 
   sync(service: HapService):SmartHomeV1SyncDevices {
@@ -11,7 +11,7 @@ export class ContactSensor {
       id: service.uniqueId,
        type: 'action.devices.types.SENSOR',
       traits: [
-        'action.devices.traits.OpenClose',
+        'action.devices.traits.OccupencySensing',
       ],
       name: {
         defaultNames: [
@@ -25,9 +25,10 @@ export class ContactSensor {
       
       
       attributes: {
-        discreteOnlyOpenClose: true,
-        commandOnlyOpenClose: false,
-      	queryOnlyOpenClose: true,
+        occupancySensorType: 'PIR',
+        occupiedToUnoccupiedDelaySec: 10,
+      	unoccupiedToOccupiedDelaySec: 10,
+      	unoccupiedToOccupiedEventThreshold: 2,
       },
       deviceInfo: {
         manufacturer: service.accessoryInformation.Manufacturer,
@@ -46,13 +47,9 @@ export class ContactSensor {
   }
 
   query(service: HapService) {
-  	const ContactSensorState = service.characteristics.find(x => x.type === Characteristic.ContactSensorState).value;
-    // open, closed, opening, closing, stopped
-    const openPercent = [100, 0][ContactSensorState];
     return {
-          on: true,
       online: true,
-      openPercent,
+		occupancy: service.characteristics.find(x => x.type === Characteristic.MotionDetected)?.value,
 	} as any;
   }
 
