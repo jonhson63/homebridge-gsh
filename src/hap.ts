@@ -24,6 +24,7 @@ import { Thermostat } from './types/thermostat';
 import { Window } from './types/window';
 import { WindowCovering } from './types/window-covering';
 import { ContactSensor } from './types/contact-sensor';
+import { MotionSensor } from './types/motion-sensor';
 
 export class Hap {
   socket;
@@ -54,6 +55,7 @@ export class Hap {
     Window: new Window(),
     WindowCovering: new WindowCovering(),
     ContactSensor: new ContactSensor(),
+    MotionSensor: new MotionSensor(),
   };
 
   /* event tracking */
@@ -85,6 +87,7 @@ export class Hap {
     Characteristic.SecuritySystemCurrentState,
     Characteristic.ContactSensorState,
     Characteristic.SmokeDetected,
+    Characteristic.MotionDetected,
   ];
 
   instanceBlacklist: Array<string> = [];
